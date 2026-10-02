@@ -64,7 +64,8 @@ TaskResult_t facialLoop(void *args) {
   init_rand();
   // update facial internal state
   while (avatar->isDrawing()) {
-    if ((lgfx::millis() - last_saccade_millis) > saccade_interval) {
+    if (avatar->getIsAutoSaccade() &&
+        (lgfx::millis() - last_saccade_millis) > saccade_interval) {
       vertical = _rand() / (RAND_MAX / 2.0) - 1;
       horizontal = _rand() / (RAND_MAX / 2.0) - 1;
       avatar->setRightGaze(vertical, horizontal);
@@ -109,6 +110,7 @@ Avatar::Avatar(Face *face)
       rightGazeH_{1.0f},
       rightGazeV_{1.0f},
       isAutoBlink_{true},
+      isAutoSaccade_{true},
       mouthOpenRatio{0},
       rotation{0},
       scale{1},
@@ -197,7 +199,10 @@ void Avatar::start(int colorDepth) {
 }
 
 void Avatar::draw() {
-  Gaze rightGaze = Gaze(this->rightGazeV_, this->rightGazeV_);
+  // Stackchan project patch: this was Gaze(rightGazeV_, rightGazeV_) - a
+  // copy-paste bug feeding the vertical field into both arguments, so the
+  // right eye's gaze never actually responded to its own horizontal value.
+  Gaze rightGaze = Gaze(this->rightGazeV_, this->rightGazeH_);
   Gaze leftGaze = Gaze(this->leftGazeV_, this->leftGazeH_);
   DrawContext *ctx = new DrawContext(
       this->expression, this->breath, &this->palette, rightGaze,
@@ -257,6 +262,10 @@ float Avatar::getRightEyeOpenRatio() { return this->rightEyeOpenRatio_; }
 void Avatar::setIsAutoBlink(bool b) { this->isAutoBlink_ = b; }
 
 bool Avatar::getIsAutoBlink() { return this->isAutoBlink_; }
+
+void Avatar::setIsAutoSaccade(bool b) { this->isAutoSaccade_ = b; }
+
+bool Avatar::getIsAutoSaccade() { return this->isAutoSaccade_; }
 
 void Avatar::setRightGaze(float vertical, float horizontal) {
   this->rightGazeV_ = vertical;

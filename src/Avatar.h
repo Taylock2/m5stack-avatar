@@ -47,6 +47,7 @@ class Avatar {
   float leftGazeH_;
 
   bool isAutoBlink_;
+  bool isAutoSaccade_;
 
   float mouthOpenRatio;
 
@@ -103,6 +104,12 @@ class Avatar {
   float getLeftEyeOpenRatio();
   void setIsAutoBlink(bool b);
   bool getIsAutoBlink();
+  // Stackchan project patch: lets a caller take over gaze entirely without
+  // fighting facialLoop()'s own random saccade, which otherwise overwrites
+  // any externally-set gaze with a small (~+/-1) random value every
+  // 0.5-2.5s regardless of what was explicitly requested.
+  void setIsAutoSaccade(bool b);
+  bool getIsAutoSaccade();
 
   void setMouthOpenRatio(float ratio);
   void setSpeechText(const char *speechText);
