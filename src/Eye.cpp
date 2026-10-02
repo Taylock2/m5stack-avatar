@@ -28,6 +28,26 @@ void Eye::draw(M5Canvas *spi, BoundingRect rect, DrawContext *ctx) {
 
   if (openRatio > 0) {
     spi->fillCircle(x + offsetX, y + offsetY, r, primaryColor);
+
+    // Stackchan project patch: continuous partial-close eyelid - closes
+    // symmetrically from both the top and bottom toward the center as
+    // openRatio drops below 1.0, rather than the circle staying full-size
+    // for any openRatio > 0 regardless of how small. Ratio semantics
+    // elsewhere treat 1.0 as "normal/fully open" and use values below it for
+    // narrower eyes but above it for wider eyes - only the <1.0 side is
+    // handled here; rendering "wider than normal" would mean scaling the
+    // circle's own radius, a different, more invasive change, so >=1.0
+    // deliberately still falls straight through to the plain full circle.
+    if (openRatio < 1.0f) {
+      int closeAmount = (int)(r * (1.0f - openRatio) + 0.5f);
+      if (closeAmount > 0) {
+        int lidX0 = x + offsetX - r;
+        int lidW = r * 2 + 4;
+        spi->fillRect(lidX0, y + offsetY - r, lidW, closeAmount, backgroundColor);
+        spi->fillRect(lidX0, y + offsetY + r - closeAmount, lidW, closeAmount, backgroundColor);
+      }
+    }
+
     // TODO(meganetaaan): Refactor
     if (exp == Expression::Angry || exp == Expression::Sad) {
       int x0, y0, x1, y1, x2, y2;
