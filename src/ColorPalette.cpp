@@ -10,7 +10,12 @@ ColorPalette::ColorPalette()
              {COLOR_SECONDARY, TFT_BLACK},
              {COLOR_BACKGROUND, TFT_BLACK},
              {COLOR_BALLOON_FOREGROUND, TFT_BLACK},
-             {COLOR_BALLOON_BACKGROUND, TFT_WHITE}} {}
+             {COLOR_BALLOON_BACKGROUND, TFT_WHITE},
+             {COLOR_EFFECT_HAPPY, 0xF800},   // red heart
+             {COLOR_EFFECT_ANGRY, 0xFD20},   // orange anger mark
+             {COLOR_EFFECT_SAD, 0x001F},     // blue chill/drip
+             {COLOR_EFFECT_SLEEPY, 0x07FF},  // cyan bubbles
+             {COLOR_EFFECT_DOUBT, 0x865F}} {}  // pale sky-blue sweat drop
 
 uint16_t ColorPalette::get(const char* key) const {
   auto itr = colors.find(key);

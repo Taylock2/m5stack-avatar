@@ -50,7 +50,14 @@ Face::Face(Drawable *mouth, BoundingRect *mouthPos, Drawable *eyeR,
       eyeblowLPos{eyeblowLPos},
       boundingRect{boundingRect},
       sprite{spr},
-      tmpSprite{tmpSpr} {}
+      tmpSprite{tmpSpr},
+      // Stackchan project patch: b/h/battery are used in draw() and ~Face()
+      // but were never constructed by any of Face's constructors - every
+      // Face ran on raw, never-allocated pointers the whole time. All three
+      // have default constructors, no args needed.
+      b{new Balloon()},
+      h{new Effect()},
+      battery{new BatteryIcon()} {}
 
 Face::~Face() {
   delete mouth;

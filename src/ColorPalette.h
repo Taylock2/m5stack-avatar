@@ -12,6 +12,16 @@
 #define COLOR_BACKGROUND "background"
 #define COLOR_BALLOON_FOREGROUND "balloon_f"
 #define COLOR_BALLOON_BACKGROUND "balloon_b"
+// Stackchan project patch: Effect.h's expression icons (heart/anger-mark/
+// sweat-drop/chill-drip/bubbles) used to share COLOR_PRIMARY with the eyes/
+// eyebrows/mouth, so there was no way to give them their own color without
+// recoloring the whole face's line art too. Split into one slot per icon so
+// each expression can have its own color instead of a single shared accent.
+#define COLOR_EFFECT_HAPPY "effect_happy"
+#define COLOR_EFFECT_ANGRY "effect_angry"
+#define COLOR_EFFECT_SAD "effect_sad"
+#define COLOR_EFFECT_SLEEPY "effect_sleepy"
+#define COLOR_EFFECT_DOUBT "effect_doubt"
 
 namespace m5avatar {
 // enum class ColorType
