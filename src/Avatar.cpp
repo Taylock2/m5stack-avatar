@@ -4,6 +4,8 @@
 
 #include "Avatar.h"
 
+#include "TearEffect.h"
+
 #ifndef PI
 #define PI 3.1415926535897932384626433832795
 #endif
@@ -233,11 +235,31 @@ void Avatar::setIconOverride(EffectIconOverride icon) {
 
 EffectIconOverride Avatar::getIconOverride() { return this->iconOverride_; }
 
+void Avatar::setTearsActive(bool active) {
+  // Occasional on/off toggle (mood start/stop), not a per-frame call - same
+  // suspend/resume treatment as setIconOverride() above, for the same reason.
+  suspend();
+  TearEffect::setActive(active);
+  resume();
+}
+
+// Called every frame (unlike setTearsActive above) - deliberately NOT wrapped
+// in suspend()/resume(), matching setEyeOpenRatio()/setRightGaze()/etc.'s
+// existing precedent for per-frame state: a torn read of in-progress particle
+// positions is as harmless as this library already accepts for gaze/eye-
+// ratio, and constantly suspending/resuming the draw task every frame would
+// be needless overhead for it.
+void Avatar::updateTears(float dtSeconds, float gx, float gy) {
+  TearEffect::update(dtSeconds, gx, gy);
+}
+
 void Avatar::setBreath(float breath) { this->breath = breath; }
 
 float Avatar::getBreath() { return this->breath; }
 
 void Avatar::setRotation(float radian) { this->rotation = radian; }
+
+float Avatar::getRotation() { return this->rotation; }
 
 void Avatar::setScale(float scale) { this->scale = scale; }
 

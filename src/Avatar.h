@@ -115,11 +115,20 @@ class Avatar {
   // the current Expression - see DrawContext.h's EffectIconOverride.
   void setIconOverride(EffectIconOverride icon);
   EffectIconOverride getIconOverride();
+  // Stackchan project patch: thin forwarding calls to TearEffect.h, which
+  // owns all the actual particle state itself (not this Avatar instance).
+  void setTearsActive(bool active);
+  void updateTears(float dtSeconds, float gx, float gy);
 
   void setMouthOpenRatio(float ratio);
   void setSpeechText(const char *speechText);
   void setSpeechFont(const lgfx::IFont *speechFont);
   void setRotation(float radian);
+  // Stackchan project patch: lets a caller read back the current whole-
+  // sprite rotation to counter-rotate something computed in world space
+  // (e.g. a gravity direction) before it's drawn, since pushRotateZoom()
+  // rotates everything drawn onto this sprite together.
+  float getRotation();
   void setPosition(int top, int left);
   void setScale(float scale);
   void draw(void);

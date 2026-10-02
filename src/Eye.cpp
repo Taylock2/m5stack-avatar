@@ -4,6 +4,8 @@
 
 #include "Eye.h"
 
+#include "TearEffect.h"
+
 namespace m5avatar {
 
 Eye::Eye(uint16_t x, uint16_t y, uint16_t r, bool isLeft) : Eye(r, isLeft) {}
@@ -78,5 +80,12 @@ void Eye::draw(M5Canvas *spi, BoundingRect rect, DrawContext *ctx) {
     int h = 4;
     spi->fillRect(x1, y1, w, h, primaryColor);
   }
+
+  // Stackchan project patch: draws whatever tear particles TearEffect
+  // currently owns for this eye. Deliberately OUTSIDE the if/else above (not
+  // just outside an exp==Sad gate) - a drop already falling should finish
+  // naturally even if the mood resets to neutral mid-drip or the eye blinks
+  // shut, and TearEffect no-ops harmlessly when nothing is active.
+  TearEffect::draw(spi, x + offsetX, y + offsetY, r, isLeft);
 }
 }  // namespace m5avatar
