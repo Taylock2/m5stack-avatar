@@ -117,7 +117,8 @@ Avatar::Avatar(Face *face)
       palette{ColorPalette()},
       speechText{""},
       colorDepth{1},
-      batteryIconStatus{BatteryIconStatus::invisible} {}
+      batteryIconStatus{BatteryIconStatus::invisible},
+      iconOverride_{EffectIconOverride::None} {}
 
 Avatar::~Avatar() { delete face; }
 
@@ -209,7 +210,7 @@ void Avatar::draw() {
       this->rightEyeOpenRatio_, leftGaze, this->leftEyeOpenRatio_,
       this->mouthOpenRatio, this->speechText, this->rotation, this->scale,
       this->colorDepth, this->batteryIconStatus, this->batteryLevel,
-      this->speechFont);
+      this->speechFont, this->iconOverride_);
   face->draw(ctx);
   delete ctx;
 }
@@ -223,6 +224,14 @@ void Avatar::setExpression(Expression expression) {
 }
 
 Expression Avatar::getExpression() { return this->expression; }
+
+void Avatar::setIconOverride(EffectIconOverride icon) {
+  suspend();
+  this->iconOverride_ = icon;
+  resume();
+}
+
+EffectIconOverride Avatar::getIconOverride() { return this->iconOverride_; }
 
 void Avatar::setBreath(float breath) { this->breath = breath; }
 

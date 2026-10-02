@@ -19,6 +19,12 @@ typedef std::string String;
 
 namespace m5avatar {
 enum BatteryIconStatus { discharging, charging, invisible, unknown };
+// Stackchan project patch: lets a caller force a specific icon overlay
+// regardless of the current Expression (Effect.h's icon switch is normally
+// keyed on Expression, but e.g. an "Affection" mood wants the heart icon
+// while keeping Neutral's own softer eyes/mouth shape, not Happy's). None =
+// fall through to the normal Expression-keyed icon.
+enum class EffectIconOverride : uint8_t { None, Sparkle, Heart };
 class DrawContext {
  private:
   Expression expression;
@@ -42,6 +48,7 @@ class DrawContext {
   int32_t batteryLevel = 0;
   const lgfx::IFont* speechFont =
       nullptr;  // = &fonts::lgfxJapanGothicP_16; //  = &fonts::efontCN_10;
+  EffectIconOverride iconOverride = EffectIconOverride::None;
 
  public:
   DrawContext() = delete;
@@ -55,7 +62,8 @@ class DrawContext {
               float leftEyeOpenRatio, float mouthOpenRatio, String speechText,
               float rotation, float scale, int colorDepth,
               BatteryIconStatus batteryIconStatus, int32_t batteryLevel,
-              const lgfx::IFont* speechFont);
+              const lgfx::IFont* speechFont,
+              EffectIconOverride iconOverride = EffectIconOverride::None);
   ~DrawContext() = default;
   DrawContext(const DrawContext& other) = delete;
   DrawContext& operator=(const DrawContext& other) = delete;
@@ -74,6 +82,7 @@ class DrawContext {
   BatteryIconStatus getBatteryIconStatus() const;
   int32_t getBatteryLevel() const;
   const lgfx::IFont* getSpeechFont() const;
+  EffectIconOverride getIconOverride() const;
 };
 }  // namespace m5avatar
 

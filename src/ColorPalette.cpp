@@ -15,7 +15,8 @@ ColorPalette::ColorPalette()
              {COLOR_EFFECT_ANGRY, 0xFD20},   // orange anger mark
              {COLOR_EFFECT_SAD, 0x001F},     // blue chill/drip
              {COLOR_EFFECT_SLEEPY, 0x07FF},  // cyan bubbles
-             {COLOR_EFFECT_DOUBT, 0x865F}} {}  // pale sky-blue sweat drop
+             {COLOR_EFFECT_DOUBT, 0x865F},     // pale sky-blue sweat drop
+             {COLOR_EFFECT_SPARKLE, 0xFFE0}} {}  // yellow sparkle
 
 uint16_t ColorPalette::get(const char* key) const {
   auto itr = colors.find(key);

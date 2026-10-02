@@ -22,7 +22,8 @@ DrawContext::DrawContext(Expression expression, float breath,
                          float leftEyeOpenRatio, float mouthOpenRatio,
                          String speechText, float rotation, float scale,
                          int colorDepth, BatteryIconStatus batteryIconStatus,
-                         int32_t batteryLevel, const lgfx::IFont* speechFont)
+                         int32_t batteryLevel, const lgfx::IFont* speechFont,
+                         EffectIconOverride iconOverride)
     : expression{expression},
       breath{breath},
       rightGaze{rightGaze},
@@ -37,7 +38,8 @@ DrawContext::DrawContext(Expression expression, float breath,
       colorDepth{colorDepth},
       batteryIconStatus(batteryIconStatus),
       batteryLevel(batteryLevel),
-      speechFont{speechFont} {}
+      speechFont{speechFont},
+      iconOverride{iconOverride} {}
 
 Expression DrawContext::getExpression() const { return expression; }
 
@@ -70,5 +72,7 @@ BatteryIconStatus DrawContext::getBatteryIconStatus() const {
 }
 
 int32_t DrawContext::getBatteryLevel() const { return batteryLevel; }
+
+EffectIconOverride DrawContext::getIconOverride() const { return iconOverride; }
 
 }  // namespace m5avatar

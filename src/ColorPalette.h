@@ -22,6 +22,11 @@
 #define COLOR_EFFECT_SAD "effect_sad"
 #define COLOR_EFFECT_SLEEPY "effect_sleepy"
 #define COLOR_EFFECT_DOUBT "effect_doubt"
+// Stackchan project patch: the sparkle icon can now be forced on top of any
+// Expression via DrawContext::getIconOverride() (not just drawn for
+// Expression::Happy), so it needs its own color slot independent of
+// whichever mood/expression currently forces it.
+#define COLOR_EFFECT_SPARKLE "effect_sparkle"
 
 namespace m5avatar {
 // enum class ColorType

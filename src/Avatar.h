@@ -59,6 +59,7 @@ class Avatar {
   BatteryIconStatus batteryIconStatus;
   int32_t batteryLevel;
   const lgfx::IFont *speechFont;
+  EffectIconOverride iconOverride_;
 
  public:
   Avatar();
@@ -110,6 +111,10 @@ class Avatar {
   // 0.5-2.5s regardless of what was explicitly requested.
   void setIsAutoSaccade(bool b);
   bool getIsAutoSaccade();
+  // Stackchan project patch: forces one of Effect.h's icons regardless of
+  // the current Expression - see DrawContext.h's EffectIconOverride.
+  void setIconOverride(EffectIconOverride icon);
+  EffectIconOverride getIconOverride();
 
   void setMouthOpenRatio(float ratio);
   void setSpeechText(const char *speechText);
